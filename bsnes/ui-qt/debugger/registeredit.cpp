@@ -10,7 +10,7 @@ RegisterEditSGB *registerEditSGB;
 	edit_##name = new QLineEdit(this); \
 	edit_##name->setFont(QFont(Style::Monospace)); \
 	edit_##name->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum); \
-	edit_##name->setFixedWidth((digits + 1) * edit_##name->fontMetrics().horizontalAdvance('0')); \
+	edit_##name->setFixedWidth((digits + 2) * edit_##name->fontMetrics().horizontalAdvance('0')); \
 	edit_##name->setInputMask(QString("H").repeated(digits)); \
 	edit_##name->setMaxLength(digits); \
 	connect(edit_##name, SIGNAL(textEdited(QString)), this, SLOT(commit())); \

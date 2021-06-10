@@ -133,13 +133,6 @@ Debugger::Debugger() {
   debugSFX = new DebuggerView(registerEditSFX, new SfxDisasmProcessor(symbolsSFX));
   debugSGB = new DebuggerView(registerEditSGB, new SgbDisasmProcessor(symbolsSGB));
 
-  editTabs = new QTabWidget;
-  editTabs->addTab(debugCPU, "CPU");
-  editTabs->addTab(debugSMP, "SMP");
-  editTabs->setTabPosition(QTabWidget::North);
-  editTabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  consoleLayout->addWidget(editTabs);
-
   console = new QTextEdit;
   console->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
   console->setReadOnly(true);
@@ -147,7 +140,14 @@ Debugger::Debugger() {
   console->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
   console->setMinimumWidth((98 + 4) * console->fontMetrics().horizontalAdvance(' '));
   console->setMinimumHeight((6 + 1) * console->fontMetrics().height());
-  consoleLayout->addWidget(console);
+
+  editTabs = new QTabWidget;
+  editTabs->addTab(debugCPU, "CPU");
+  editTabs->addTab(debugSMP, "SMP");
+  editTabs->addTab(console, "Console");
+  editTabs->setTabPosition(QTabWidget::North);
+  editTabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  consoleLayout->addWidget(editTabs);
 
   runBreak = new QToolButton;
   runBreak->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
