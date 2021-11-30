@@ -3,7 +3,7 @@
 
 namespace nall {
 
-class CheckDelegate : public QStyledItemDelegate {
+class CheckDelegate : public QItemDelegate {
   Q_OBJECT
 
 public:
@@ -21,7 +21,7 @@ private:
 };
 
 inline CheckDelegate::CheckDelegate(QObject *parent)
-  : QStyledItemDelegate(parent) {
+  : QItemDelegate(parent) {
   
   // Rendering the checkboxes with native OS style is expensive, so just generate
   // two fixed images representing the two main states of the checkbox
@@ -50,22 +50,24 @@ inline QRect CheckDelegate::CheckBoxRect(const QStyleOptionViewItem &option) con
 }
 
 inline QWidget* CheckDelegate::createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const {
-  return 0;
+  return new QCheckBox();
 }
 
 inline void CheckDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-  // paint the background
+  //paint the background
   const QWidget *widget = option.widget;
   QStyle *style = widget ? widget->style() : QApplication::style();
   style->drawControl(QStyle::CE_ItemViewItem, &option, painter, widget);
 
-  // paint the widget
   QRect rect = CheckBoxRect(option);
 
-  if (index.model()->data(index, Qt::EditRole).toBool())
-    painter->drawPixmap(rect, this->pixmapOn);
-  else 
-    painter->drawPixmap(rect, this->pixmapOff);
+  if (index.model()->data(index, Qt::EditRole).toBool()) {
+      drawCheck(painter, option, rect, Qt::Checked);
+      drawFocus(painter, option, rect);
+  } else {
+      drawCheck(painter, option, rect, Qt::Unchecked);
+      drawFocus(painter, option, rect);
+  }
 }
 
 inline bool CheckDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) {
